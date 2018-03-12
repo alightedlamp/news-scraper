@@ -4,15 +4,18 @@ const Schema = mongoose.Schema;
 const comment = new Schema({
   user_id: {
     type: Number,
-    trim: true
+    trim: true,
+    required: true
   },
   article_id: {
     type: Number,
-    trim: true
+    trim: true,
+    required: true
   },
   name: {
     type: String,
-    trim: true
+    trim: true,
+    required: true
   },
   created_at: {
     type: Date,

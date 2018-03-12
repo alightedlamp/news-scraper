@@ -4,19 +4,29 @@ const Schema = mongoose.Schema;
 const article = new Schema({
   title: {
     type: String,
-    trim: true
+    trim: true,
+    unqique: true,
+    required: true
   },
   author: {
     type: String,
-    trim: true
+    trim: true,
+    required: true
   },
   summary: {
     type: String,
-    trim: true
+    trim: true,
+    required: true
   },
   link: {
     type: String,
-    trim: true
+    trim: true,
+    unique: true,
+    required: true
+  },
+  score: {
+    type: Number,
+    required: true
   },
   num_favorites: {
     type: Number,
