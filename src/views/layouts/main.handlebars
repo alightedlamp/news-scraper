@@ -9,11 +9,26 @@
 </head>
 
 <body>
-    {{{body}}}
+    <section class="app">
+        <header>
+            <h1>
+                <a href="/">MetaHacker</a>
+            </h1>
+        </header>
+        <nav>
+            <a href="/">Home</a>
+            {{#unless user}}
+            <a class="btn" href="/user/login">Login</a>
+            <a class="btn" href="/user/register">Sign Up</a>
+            {{/unless}}
+        </nav>
+        <div id="#flash-message"></div>
+        {{{body}}}
+    </section>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
-    <script src="js/index.js"></script>
+    <script src="../js/index.js"></script>
 </body>
 
 </html>

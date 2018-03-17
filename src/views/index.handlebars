@@ -1,27 +1,16 @@
-<section class="app">
-    <header>
-        <h1>MetaHacker</h1>
-    </header>
-    <nav>
-        {{#unless user}}
-        <a class="btn" href="/user/login">Login</a>
-        <a class="btn" href="/user/register">Sign Up</a>
-        {{/unless}}
-    </nav>
-    <section class="content">
-        {{#each articles}}
-        <article>
-            <h3>
-                <a href="{{link}}">{{title}}</a>
-            </h3>
-            <p>
-                <strong>Source:</strong> {{ source }} {{#if score}} | Score: {{ score }} {{/if}}
-            </p>
-            {{#if user}} |
-            <button class="like-article" data-article-id="{{id}}">Like</button> |
-            <button class="save-article" data-article-id="{{id}}">Save</button>
-            {{/if}}
-        </article>
-        {{/each}}
-    </section>
+<section class="content">
+    {{#each articles}}
+    <article>
+        <h3>
+            <a href="{{link}}">{{title}}</a>
+        </h3>
+        <p>
+            <strong>Source:</strong> {{ source }} {{#if score}} | Score: {{ score }} {{/if}}
+        </p>
+        {{#if user}} |
+        <button class="like-article" data-article-id="{{id}}">Like</button> |
+        <button class="save-article" data-article-id="{{id}}">Save</button>
+        {{/if}}
+    </article>
+    {{/each}}
 </section>

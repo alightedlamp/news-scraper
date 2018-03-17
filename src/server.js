@@ -6,6 +6,7 @@ import session from 'express-session'
 import passport from 'passport'
 import bodyParser from 'body-parser'
 import expressHandlebars from 'express-handlebars'
+import { Strategy } from 'passport-local'
 
 import User from './models/User'
 import { PORT, MONGODB_URI } from './shared/config'
@@ -21,9 +22,32 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 const app = express()
 
-passport.use(User.createStrategy())
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
+passport.use(new Strategy((username, password, cb) => {
+  db.User.findByUsername(username, (err, user) => {
+    if (err) {
+      return cb(err)
+    }
+    if (!user) {
+      return cb(null, false)
+    }
+    if (user.password != password) {
+      return cb(null, false)
+    }
+    return cb(null, user)
+  })
+}))
+passport.serializeUser((user, cb) => {
+  cb(null, user.id)
+})
+
+passport.deserializeUser((id, cb) => {
+  db.users.findById(id, (err, user) => {
+    if (err) {
+      return cb(err)
+    }
+    cb(null, user)
+  })
+})
 
 app.engine(
   'handlebars',
@@ -44,10 +68,12 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
 app.use(compression())
+
+app.use('/', express.static(path.join(__dirname, '/public')))
 app.use(require('./routes'))
 
 // Catch 404 and forward to error handler
@@ -62,6 +88,8 @@ app.use((err, req, res, next) => {
   // Set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
+
+  console.error(err)
 
   // Render the error page
   res.status(err.status || 500)

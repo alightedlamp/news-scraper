@@ -12,56 +12,13 @@ export const populate = () =>
   Promise.all([scraper.scrapeHackerNews(), scraper.scrapeReddit()])
     .then((data) => {
       const articles = data.reduce((reducer, arr) => reducer.concat(arr), [])
-      // Does this need to be wrapped?
-      // eslint-disable-next-line
-      return new Promise((resolve, reject) => {
-        Article.create(articles, (err, docs) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(docs)
-          }
-        })
-      })
+      return Article.create(articles)
     })
     .catch(err => new Error(err))
 
-export const getOne = id =>
-  // eslint-disable-next-line
-  new Promise((resolve, reject) => {
-    Article.findOne({ _id: id }, (err, docs) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(docs)
-      }
-    })
-  })
-
-export const getAll = () =>
-  // eslint-disable-next-line
-  new Promise((resolve, reject) => {
-    Article.find({}, (err, docs) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(docs)
-      }
-    })
-  })
-
-// Should this be a function on the User schema?
-export const getSaved = userId =>
-  // eslint-disable-next-line
-  new Promise((resolve, reject) => {
-    SavedArticle.find({ userId }, (err, docs) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(docs)
-      }
-    })
-  })
+export const getAll = () => Article.find({})
+export const getOne = id => Article.findOne({ _id: id })
+export const getSaved = userId => SavedArticle.find({ userId })
 
 // API route controllers
 // ////////////////////////////

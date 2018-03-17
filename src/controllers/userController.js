@@ -1,5 +1,3 @@
-import Promise from 'promise-polyfill'
-
 import User from '../models/User'
 
 // User handlers
@@ -24,46 +22,38 @@ export const getUserById = async (req, res, next) => {
     next(err)
   }
 }
+
 export const logoutUser = (req, res) => {
   req.logout()
   res.redirect('/')
 }
+
 export const registerUser = (req, res, next) =>
-  User.register(new User({ username: req.body.username }), req.body.password, (err) => {
-    if (err) {
-      next(err)
-    } else {
-      res.redirect('/')
-    }
-  })
+  User.create({ username: req.body.username, password: req.body.password })
+    .then(() => res.sendStatus(200))
+    .catch(err => next(err))
+
 export const updateUserById = (req, res, next) =>
-  User.update(req.body, (err, doc) => {
-    if (err) {
-      next(err)
-    } else {
-      res.json(doc)
-    }
-  })
+  User.update(req.body)
+    .then(doc => res.json(doc))
+    .catch(err => next(err))
+
 export const deleteUserById = (req, res, next) =>
-  User.delete({ _id: req.params.id }, (err) => {
-    if (err) {
-      next(err)
-    } else {
-      res.send(200)
-    }
-  })
+  User.delete({ _id: req.params.id })
+    .then(() => res.sendStatus(200))
+    .catch(err => next(err))
 
 // HTML route controllers
 // ////////////////////////////
 
 export const renderLogin = (req, res) => res.render('login')
 export const renderRegister = (req, res) => res.render('register')
-export const renderDashboard = (req, res) => {
-  const data = getUserData({ user_id: req.user.id, authenticated: true })
-  res.render('dashboard', { data })
+export const renderDashboard = async (req, res) => {
+  const data = await getUserData({ user_id: req.user.id, authenticated: true })
+  res.render('/', { data })
 }
-export const renderProfile = (req, res) => {
-  const data = getUserData({ user_id: req.params.id, authenticated: false })
+export const renderProfile = async (req, res) => {
+  const data = await getUserData({ user_id: req.params.id, authenticated: false })
   res.render('profile', { data })
 }
 export const renderEdit = (req, res) => {
