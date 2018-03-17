@@ -7,8 +7,7 @@ import passport from 'passport'
 import bodyParser from 'body-parser'
 import expressHandlebars from 'express-handlebars'
 
-import { Strategy } from 'passport-local'
-
+import User from './models/User'
 import { PORT, MONGODB_URI } from './shared/config'
 
 mongoose.Promise = Promise
@@ -22,30 +21,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 const app = express()
 
-passport.use(new Strategy((username, password, done) => {
-  db.User.findOne({ username }, (err, user) => {
-    if (err) {
-      return done(err)
-    }
-    if (!user) {
-      return done(null, false)
-    }
-    if (!user.verifyPassword(password)) {
-      return done(null, false)
-    }
-    return done(null, user)
-  })
-}))
-
-passport.serializeUser((user, done) => {
-  done(null, user.id)
-})
-
-passport.deserializeUser((id, done) => {
-  db.User.findById(id)
-    .then(user => done(null, user))
-    .catch(err => done(err, null))
-})
+passport.use(User.createStrategy())
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 app.engine(
   'handlebars',

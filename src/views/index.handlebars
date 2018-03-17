@@ -15,9 +15,9 @@
                 <a href="{{link}}">{{title}}</a>
             </h3>
             <p>
-                <strong>Source:</strong> {{ source }} {{#if score}} | Score: {{ score }} | {{/if}}
+                <strong>Source:</strong> {{ source }} {{#if score}} | Score: {{ score }} {{/if}}
             </p>
-            {{#if user}}
+            {{#if user}} |
             <button class="like-article" data-article-id="{{id}}">Like</button> |
             <button class="save-article" data-article-id="{{id}}">Save</button>
             {{/if}}

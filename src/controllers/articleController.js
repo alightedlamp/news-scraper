@@ -12,6 +12,7 @@ export const populate = () =>
   Promise.all([scraper.scrapeHackerNews(), scraper.scrapeReddit()])
     .then((data) => {
       const articles = data.reduce((reducer, arr) => reducer.concat(arr), [])
+      // Does this need to be wrapped?
       // eslint-disable-next-line
       return new Promise((resolve, reject) => {
         Article.create(articles, (err, docs) => {
@@ -34,7 +35,7 @@ export const getOne = id =>
       } else {
         resolve(docs)
       }
-    }).catch(err => new Error(err))
+    })
   })
 
 export const getAll = () =>
@@ -46,9 +47,10 @@ export const getAll = () =>
       } else {
         resolve(docs)
       }
-    }).catch(err => new Error(err))
+    })
   })
 
+// Should this be a function on the User schema?
 export const getSaved = userId =>
   // eslint-disable-next-line
   new Promise((resolve, reject) => {
@@ -58,7 +60,7 @@ export const getSaved = userId =>
       } else {
         resolve(docs)
       }
-    }).catch(err => new Error(err))
+    })
   })
 
 // API route controllers
@@ -70,9 +72,8 @@ export const getArticleById = (req, res) => getOne(req.params.id).then(data => r
 // HTML route controllers
 // ////////////////////////////
 
-export const renderHome = async (req, res) => {
+export const renderHome = async (req, res, next) => {
   try {
-    // This will be triggered on front-end to avoid blocking page load
     const newArticles = await populate()
     const savedArticles = await getAll()
 
@@ -81,14 +82,14 @@ export const renderHome = async (req, res) => {
       articles,
     })
   } catch (err) {
-    res.status(500).send({ error: err })
+    next(err)
   }
 }
 
-export const renderSaved = (req, res) =>
+export const renderSaved = (req, res, next) =>
   getSaved(req.user.id)
     .then(data => res.render('saved', { articles: data }))
-    .catch(err => res.status(500).send({ error: err }))
+    .catch(err => next(err))
 
 export const renderOne = (req, res) =>
   getOne(req.params.id).then(data => res.render('article', { article: data }))

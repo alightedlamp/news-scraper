@@ -5,22 +5,24 @@ import * as userController from '../../controllers/userController'
 
 const router = express.Router()
 
-router.get('/', userController.renderDashboard)
-router.get('/profile/:id', userController.renderProfile)
-router.get('/edit/:id', userController.renderEdit)
+// View Routes
+// ////////////////////////////
 
-router.get('/login', (req, res) => res.render('login'))
-router.get('/register', (req, res) => {
-  console.log('Rendering register page')
-  res.render('register')
-})
+router.get('/register', userController.renderRegister)
+router.post('/register', userController.registerUser)
 
-router.get('/logout', (req, res) => {
-  req.logout()
-  res.redirect('/')
-})
-
+router.get('/login', userController.renderLogin)
 router.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) =>
   res.redirect('/'))
+
+router.get('/logout', userController.logoutUser)
+
+router.get('/', userController.renderDashboard)
+router.get('/profile/:id', userController.renderProfile)
+
+router.get('/edit/:id', userController.renderEdit)
+// Do I need these if there are API routes for the same thing?
+router.put('/edit/:id', userController.updateUserById)
+router.delete('/delete/:id', userController.deleteUserById)
 
 module.exports = router

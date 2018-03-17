@@ -5,15 +5,19 @@
   "repository": "git@github.com:alightedlamp/news-scraper.git",
   "author": "Philip Harrell <alightedlamp@gmail.com>",
   "license": "MIT",
-  "browserslist": ["> 1%"],
+  "browserslist": [
+    "> 1%"
+  ],
   "jest": {
-    "roots": ["tests"]
+    "roots": [
+      "tests"
+    ]
   },
   "scripts": {
     "start": "nodemon --ignore tests --exec babel-node src/server",
-    "test": "eslint src && flow && jest --coverage"
-    // "precommit": "yarn test",
-    // "prepush": "yarn test"
+    "test": "eslint src && flow && jest --coverage",
+    "precommit": "yarn test",
+    "prepush": "yarn test"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -27,6 +31,7 @@
     "mongoose-unique-validator": "^2.0.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.0",
     "path": "^0.12.7",
     "promise-polyfill": "^7.1.0"
   },
