@@ -1,23 +1,50 @@
 {
-  "name": "14-News-Scraper",
+  "name": "metahacker",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:alightedlamp/news-scraper.git",
   "author": "Philip Harrell <alightedlamp@gmail.com>",
   "license": "MIT",
+  "browserslist": ["> 1%"],
+  "jest": {
+    "roots": ["tests"]
+  },
+  "scripts": {
+    "start": "nodemon --ignore tests --exec babel-node src/server",
+    "test": "eslint src && flow && jest --coverage"
+    // "precommit": "yarn test",
+    // "prepush": "yarn test"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
+    "compression": "^1.7.2",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "mongoose": "^5.0.9",
+    "mongoose-unique-validator": "^2.0.0",
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "promise-polyfill": "^7.1.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "mocha": "^5.0.4"
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-jest": "^22.4.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-compat": "^2.2.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "flow-bin": "^0.67.1",
+    "husky": "^0.14.3",
+    "jest": "^22.4.2"
   }
 }
