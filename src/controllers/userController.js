@@ -17,7 +17,7 @@ export const getUserData = (user) => {
 
 export const getUserById = async (req, res, next) => {
   try {
-    const data = await getUserData({ user_id: req.params.id, authenticated: false })
+    const data = await getUserData({ user_id: req.user._id, authenticated: false })
     req.json(data)
   } catch (err) {
     next(err)
@@ -29,15 +29,13 @@ export const logoutUser = (req, res) => {
   res.redirect('/')
 }
 
-export const registerUser = (req, res, next) => {
-  User.register(new User({ username: req.body.username }), req.body.password, (err) => {
-    if (err) {
-      next(err)
-    } else {
-      res.redirect('/')
-    }
-  })
-}
+export const registerUser = (req, res, next) =>
+  User.register(new User({ username: req.body.username }), req.body.password)
+    .then(() => {
+      passport.authenticate('local', { failureRedirect: '/user/login' })(req, res, () =>
+        res.redirect('/'))
+    })
+    .catch(err => next(err))
 
 export const updateUserById = (req, res, next) =>
   User.update(req.body)
@@ -45,23 +43,29 @@ export const updateUserById = (req, res, next) =>
     .catch(err => next(err))
 
 export const deleteUserById = (req, res, next) =>
-  User.delete({ _id: req.params.id })
+  User.delete({ _id: req.user._id })
     .then(() => res.sendStatus(200))
     .catch(err => next(err))
 
 // HTML route controllers
 // ////////////////////////////
 
-export const renderLogin = (req, res) => res.render('login')
-export const renderRegister = (req, res) => res.render('register')
 export const renderDashboard = async (req, res) => {
-  const data = await getUserData({ user_id: req.user.id, authenticated: true })
-  res.render('/', { data })
+  const data = await getUserData({ user_id: req.user._id, authenticated: true })
+  res.render('dashboard', { data })
 }
 export const renderProfile = async (req, res) => {
-  const data = await getUserData({ user_id: req.params.id, authenticated: false })
-  res.render('profile', { data })
+  const data = await getUserData({ user_id: req.user._id, authenticated: false })
+  res.render('profile', { data, user: req.user.username })
 }
 export const renderEdit = (req, res) => {
-  res.render('edit', { user: req.user })
+  res.render('edit', { user: req.user.username })
 }
+export const renderLogin = (req, res) => {
+  if (req.user) {
+    renderProfile()
+  } else {
+    res.render('login')
+  }
+}
+export const renderRegister = (req, res) => res.render('register')

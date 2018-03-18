@@ -15,13 +15,6 @@
                 <a href="/">MetaHacker</a>
             </h1>
         </header>
-        <nav>
-            <a href="/">Home</a>
-            {{#unless user}}
-            <a class="btn" href="/user/login">Login</a>
-            <a class="btn" href="/user/register">Sign Up</a>
-            {{/unless}}
-        </nav>
         <div id="#flash-message"></div>
         {{{body}}}
     </section>

@@ -6,7 +6,6 @@ import session from 'express-session'
 import passport from 'passport'
 import bodyParser from 'body-parser'
 import expressHandlebars from 'express-handlebars'
-import { Strategy } from 'passport-local'
 
 import User from './models/User'
 import { PORT, MONGODB_URI } from './shared/config'

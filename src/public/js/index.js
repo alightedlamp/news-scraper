@@ -11,7 +11,7 @@ $(document).ready(() => {
     if (err.status === 500) {
       messageType = 'danger'
       msg = 'Something went wrong in the application'
-    } else if (err.status === 403) {
+    } else if (err.status === 401 || err.status === 403) {
       messageType = 'warning'
       msg = 'You are not logged in!'
     }
