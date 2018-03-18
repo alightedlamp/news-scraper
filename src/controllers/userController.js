@@ -1,5 +1,7 @@
 import passport from 'passport'
 import User from '../models/User'
+import SavedArticle from '../models/SavedArticle'
+import Article from '../models/Article'
 
 // User handlers
 // ////////////////////////////
@@ -11,6 +13,11 @@ export const getUserData = (user) => {
     // Return favorites and public info
   }
 }
+export const saveUserArticle = body => SavedArticle.create(body)
+export const likeUserArticle = () =>
+  // Update num_likes on article
+  // Save liked status on User
+  Article.update()
 
 // API route controllers
 // ////////////////////////////
@@ -57,6 +64,28 @@ export const renderDashboard = async (req, res) => {
 }
 export const renderEdit = (req, res) => {
   res.render('edit', { user: req.user.username })
+}
+export const handleSaveArticle = async (req, res, next) => {
+  try {
+    await saveUserArticle({
+      user_id: req.user.id,
+      article_id: req.params.articleId,
+    })
+    res.sendStatus(200)
+  } catch (err) {
+    next(err)
+  }
+}
+export const handleLikeArticle = async (req, res, next) => {
+  try {
+    await likeUserArticle({
+      user_id: req.user.id,
+      article_id: req.params.articleId,
+    })
+    res.sendStatus(200)
+  } catch (err) {
+    next(err)
+  }
 }
 
 // PUBLIC ROUTES

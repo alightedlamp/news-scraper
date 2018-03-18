@@ -1,17 +1,6 @@
 {{> nav}}
 <section class="content">
-    {{#each articles}}
-    <article>
-        <h3>
-            <a href="{{link}}">{{title}}</a>
-        </h3>
-        <p>
-            <strong>Source:</strong> {{ source }} {{#if score}} | Score: {{ score }} {{/if}}
-        </p>
-        {{#if user}} |
-        <button class="like-article" data-article-id="{{id}}">Like</button> |
-        <button class="save-article" data-article-id="{{id}}">Save</button>
-        {{/if}}
-    </article>
-    {{/each}}
+    {{#if user}} {{#each articles}} {{> user-article}} {{/each}} {{else}} {{#each articles }} {{> public-article}} {{/each}}
+    {{/if}}
+
 </section>

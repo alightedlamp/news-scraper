@@ -43,4 +43,27 @@ $(document).ready(() => {
       })
       .fail(err => handleError(err))
   })
+
+  // Front-end State Changes
+  // ////////////////////////////
+
+  $('.like-article').on('click', function handleLikeArticle() {
+    const articleId = $(this).data('article-id')
+    $.post(`/user/save_article/${articleId}`, articleId)
+      .done(() => {
+        // Animate the button or some shit
+        console.log('article liked by user')
+      })
+      .fail(err => handleError(err))
+  })
+
+  $('.save-article').on('click', function handleSaveArticle() {
+    const articleId = $(this).data('article-id')
+    $.post(`/user/save_article/${articleId}`, articleId)
+      .done(() => {
+        // Animate the button or some shit
+        console.log('article saved by user')
+      })
+      .fail(err => handleError(err))
+  })
 })
