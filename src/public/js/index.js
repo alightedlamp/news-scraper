@@ -6,7 +6,6 @@ $(document).ready(() => {
     }, {})
 
   const handleError = (err) => {
-    console.log(err)
     let messageType = 'success'
     let msg = "The person who wrote this didn't handle this code!"
     if (err.status === 500) {

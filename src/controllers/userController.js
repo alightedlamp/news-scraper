@@ -1,3 +1,4 @@
+import passport from 'passport'
 import User from '../models/User'
 
 // User handlers
@@ -28,10 +29,15 @@ export const logoutUser = (req, res) => {
   res.redirect('/')
 }
 
-export const registerUser = (req, res, next) =>
-  User.create({ username: req.body.username, password: req.body.password })
-    .then(() => res.sendStatus(200))
-    .catch(err => next(err))
+export const registerUser = (req, res, next) => {
+  User.register(new User({ username: req.body.username }), req.body.password, (err) => {
+    if (err) {
+      next(err)
+    } else {
+      res.redirect('/')
+    }
+  })
+}
 
 export const updateUserById = (req, res, next) =>
   User.update(req.body)

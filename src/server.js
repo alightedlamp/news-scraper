@@ -22,32 +22,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 const app = express()
 
-passport.use(new Strategy((username, password, cb) => {
-  db.User.findByUsername(username, (err, user) => {
-    if (err) {
-      return cb(err)
-    }
-    if (!user) {
-      return cb(null, false)
-    }
-    if (user.password != password) {
-      return cb(null, false)
-    }
-    return cb(null, user)
-  })
-}))
-passport.serializeUser((user, cb) => {
-  cb(null, user.id)
-})
-
-passport.deserializeUser((id, cb) => {
-  db.users.findById(id, (err, user) => {
-    if (err) {
-      return cb(err)
-    }
-    cb(null, user)
-  })
-})
+passport.use(User.createStrategy())
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 app.engine(
   'handlebars',
