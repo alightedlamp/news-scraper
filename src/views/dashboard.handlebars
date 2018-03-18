@@ -1,9 +1,11 @@
 {{> nav}}
 <h2>Dashboard</h2>
 <nav class="subnav">
-    <a href="/profile">My Profile</a>
-    <a href="/edit">Edit Account</a>
+    <a href="/user/{{ user.id }}">My Profile</a>
+    <a href="/user/edit">Edit Account</a>
 </nav>
 <p>Here is where your saved articles will be saved.</p>
 <h3>Saved Articles</h3>
+{{#each saved_article}} {{/each}}
 <h3>Your Comments</h3>
+{{#each commented_article}} {{#each comment}} {{/each}} {{/each}}

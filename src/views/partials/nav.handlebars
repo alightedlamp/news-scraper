@@ -3,5 +3,8 @@
     {{#unless user}}
     <a class="btn" href="/user/login">Login</a>
     <a class="btn" href="/user/register">Sign Up</a>
-    {{/unless}}
+    {{/unless}} {{#if user}}
+    <a class="btn" href="/user">Dashboard</a>
+    <a class="btn" href="/user/logout">Log Out</a>
+    {{/if}}
 </nav>

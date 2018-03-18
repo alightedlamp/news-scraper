@@ -14,7 +14,8 @@
     ]
   },
   "scripts": {
-    "start": "nodemon --ignore tests --exec babel-node src/server",
+    "build": "babel src/ --out-dir=dist --source-maps",
+    "start": "nodemon --ignore /tests --exec babel-node src/server",
     "test": "eslint src && flow && jest --coverage",
     "precommit": "yarn test",
     "prepush": "yarn test"
@@ -40,6 +41,8 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-jest": "^22.4.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "eslint": "^4.18.2",

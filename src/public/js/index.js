@@ -1,4 +1,7 @@
 $(document).ready(() => {
+  // Helpers
+  // ////////////////////////////
+
   const convert = data =>
     data.reduce((o, item) => {
       o[item.name] = item.value.trim()
@@ -17,6 +20,9 @@ $(document).ready(() => {
     }
     $('#flash-msg').html(`<div class="message ${messageType}"><strong>Error</strong>: ${msg}</div>`)
   }
+
+  // User Managements
+  // ////////////////////////////
 
   $('#registration-form').submit(function handleRegistration(e) {
     e.preventDefault()

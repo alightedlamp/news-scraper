@@ -50,16 +50,19 @@ export const deleteUserById = (req, res, next) =>
 // HTML route controllers
 // ////////////////////////////
 
+// AUTHENTICATED ROUTES
 export const renderDashboard = async (req, res) => {
   const data = await getUserData({ user_id: req.user._id, authenticated: true })
-  res.render('dashboard', { data })
-}
-export const renderProfile = async (req, res) => {
-  const data = await getUserData({ user_id: req.user._id, authenticated: false })
-  res.render('profile', { data, user: req.user.username })
+  res.render('dashboard', { data, user: req.user })
 }
 export const renderEdit = (req, res) => {
   res.render('edit', { user: req.user.username })
+}
+
+// PUBLIC ROUTES
+export const renderProfile = async (req, res) => {
+  const data = await getUserData({ user_id: req.params.id, authenticated: false })
+  res.render('profile', { data, user: req.user.username })
 }
 export const renderLogin = (req, res) => {
   if (req.user) {

@@ -30,6 +30,7 @@ export const getArticleById = (req, res) => getOne(req.params.id).then(data => r
 // ////////////////////////////
 
 export const renderHome = async (req, res, next) => {
+  const { user } = req || ''
   try {
     const newArticles = await populate()
     const savedArticles = await getAll()
@@ -37,6 +38,7 @@ export const renderHome = async (req, res, next) => {
     const articles = savedArticles.concat(newArticles)
     res.render('index', {
       articles,
+      user,
     })
   } catch (err) {
     next(err)
