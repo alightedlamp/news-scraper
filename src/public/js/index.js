@@ -21,7 +21,7 @@ $(document).ready(() => {
     $('#flash-msg').html(`<div class="message ${messageType}"><strong>Error</strong>: ${msg}</div>`)
   }
 
-  // User Managements
+  // User Management
   // ////////////////////////////
 
   $('#registration-form').submit(function handleRegistration(e) {
@@ -49,7 +49,7 @@ $(document).ready(() => {
 
   $('.like-article').on('click', function handleLikeArticle() {
     const articleId = $(this).data('article-id')
-    $.post(`/user/save_article/${articleId}`, articleId)
+    $.post(`/user/like_article/${articleId}`, articleId)
       .done(() => {
         // Animate the button or some shit
         console.log('article liked by user')

@@ -14,11 +14,7 @@ const router = express.Router()
 router.get('/register', userController.renderRegister)
 router.post('/register', userController.registerUser)
 router.get('/login', userController.renderLogin)
-router.post(
-  '/login',
-  passport.authenticate('local', { failureRedirect: '/user/login' }),
-  userController.renderDashboard,
-)
+router.post('/login', passport.authenticate('local'), userController.renderDashboard)
 router.get('/logout', ensureAuthenticated, userController.logoutUser)
 
 // Page render routes

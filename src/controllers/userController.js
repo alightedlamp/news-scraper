@@ -8,10 +8,9 @@ import Article from '../models/Article'
 
 export const getUserData = (user) => {
   if (user.authenticated) {
-    // Get saved articles, favorites, and private stats
-  } else {
-    // Return favorites and public info
+    return SavedArticle.find({ user_id: user.user_id })
   }
+  // Return favorites and public info
 }
 export const saveUserArticle = body => SavedArticle.create(body)
 export const likeUserArticle = () =>
@@ -59,8 +58,8 @@ export const deleteUserById = (req, res, next) =>
 
 // AUTHENTICATED ROUTES
 export const renderDashboard = async (req, res) => {
-  const data = await getUserData({ user_id: req.user._id, authenticated: true })
-  res.render('dashboard', { data, user: req.user })
+  const savedArticles = await getUserData({ user_id: req.user._id, authenticated: true })
+  res.render('dashboard', { saved_articles: savedArticles, user: req.user })
 }
 export const renderEdit = (req, res) => {
   res.render('edit', { user: req.user.username })
