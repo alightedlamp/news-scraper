@@ -37,10 +37,7 @@ export const logoutUser = (req, res) => {
 
 export const registerUser = (req, res, next) =>
   User.register(new User({ username: req.body.username }), req.body.password)
-    .then(() => {
-      passport.authenticate('local', { failureRedirect: '/user/login' })(req, res, () =>
-        res.redirect('/'))
-    })
+    .then(() => passport.authenticate('local')(req, res, next))
     .catch(err => res.status(500).json({ error: err.message }))
 
 export const updateUserById = (req, res, next) =>
@@ -61,9 +58,9 @@ export const renderDashboard = async (req, res) => {
   const savedArticles = await getUserData({ user_id: req.user._id, authenticated: true })
   res.render('dashboard', { saved_articles: savedArticles, user: req.user })
 }
-export const renderEdit = (req, res) => {
-  res.render('edit', { user: req.user.username })
-}
+export const renderEdit = (req, res) => res.render('edit', { user: req.user.username })
+
+// Saving and liking articles are handled with AJAX client-side
 export const handleSaveArticle = async (req, res, next) => {
   try {
     await saveUserArticle({
@@ -72,7 +69,7 @@ export const handleSaveArticle = async (req, res, next) => {
     })
     res.sendStatus(200)
   } catch (err) {
-    next(err)
+    res.status(500).json({ error: 'Could not save article! Please try again' })
   }
 }
 export const handleLikeArticle = async (req, res, next) => {
@@ -83,7 +80,7 @@ export const handleLikeArticle = async (req, res, next) => {
     })
     res.sendStatus(200)
   } catch (err) {
-    next(err)
+    res.status(500).json({ error: 'Could not like article! Please try again' })
   }
 }
 

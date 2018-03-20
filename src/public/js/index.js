@@ -58,4 +58,14 @@ $(document).ready(() => {
       })
       .fail(err => handleError(err))
   })
+
+  /* TO-DO:
+
+    // Sort filter handlers here
+
+    // Pagination handlers here
+
+    // Comment handlers here
+
+  */
 })

@@ -12,7 +12,7 @@ const router = express.Router()
 
 // Authorization routes / handlers
 router.get('/register', userController.renderRegister)
-router.post('/register', userController.registerUser)
+router.post('/register', userController.registerUser, userController.renderDashboard)
 router.get('/login', userController.renderLogin)
 
 // Validation and success routng are handled client-side
