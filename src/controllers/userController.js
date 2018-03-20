@@ -24,7 +24,7 @@ export const likeUserArticle = () =>
 export const getUserById = async (req, res, next) => {
   try {
     const data = await getUserData({ user_id: req.user._id, authenticated: false })
-    req.json(data)
+    res.json(data)
   } catch (err) {
     next(err)
   }
@@ -41,7 +41,7 @@ export const registerUser = (req, res, next) =>
       passport.authenticate('local', { failureRedirect: '/user/login' })(req, res, () =>
         res.redirect('/'))
     })
-    .catch(err => next(err))
+    .catch(err => res.status(500).json({ error: err.message }))
 
 export const updateUserById = (req, res, next) =>
   User.update(req.body)

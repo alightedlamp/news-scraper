@@ -1,3 +1,4 @@
+// @flow
 import Promise from 'promise-polyfill'
 
 import Article from '../models/Article'
@@ -17,8 +18,8 @@ export const populate = () =>
     .catch(err => new Error(err))
 
 export const getAll = () => Article.find({})
-export const getOne = id => Article.findOne({ _id: id })
-export const getSaved = userId => SavedArticle.find({ userId })
+export const getOne = (id: string) => Article.findOne({ _id: id })
+export const getSaved = (userId: string) => SavedArticle.find({ userId })
 
 // API route controllers
 // ////////////////////////////

@@ -14,6 +14,10 @@ const router = express.Router()
 router.get('/register', userController.renderRegister)
 router.post('/register', userController.registerUser)
 router.get('/login', userController.renderLogin)
+
+// Validation and success routng are handled client-side
+// passport.authenticate takes an additional failureRedirect object arg for
+// server-side validation
 router.post('/login', passport.authenticate('local'), userController.renderDashboard)
 router.get('/logout', ensureAuthenticated, userController.logoutUser)
 

@@ -3,6 +3,6 @@ export const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     next()
   } else {
-    res.sendStatus(401).json({ error: 'Unauthorized' })
+    res.redirect('/user/login')
   }
 }

@@ -8,18 +8,10 @@ $(document).ready(() => {
       return o
     }, {})
 
-  const handleError = (err) => {
-    let messageType = 'success'
-    let msg = "The person who wrote this didn't handle this code!"
-    if (err.status === 500) {
-      messageType = 'danger'
-      msg = 'Something went wrong in the application'
-    } else if (err.status === 401 || err.status === 403) {
-      messageType = 'warning'
-      msg = 'You are not logged in!'
-    }
-    $('#flash-msg').html(`<div class="message ${messageType}"><strong>Error</strong>: ${msg}</div>`)
-  }
+  const handleError = err =>
+    $('#flash-msg').html(`<div class="message err-${err.status}"><strong>Uh oh!</strong> ${
+      err.responseJSON.error
+    }</div>`)
 
   // User Management
   // ////////////////////////////
