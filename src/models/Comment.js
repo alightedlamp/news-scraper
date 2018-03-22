@@ -4,14 +4,12 @@ const { Schema } = mongoose
 
 const comment = new Schema({
   user_id: {
-    type: Number,
-    trim: true,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
   article_id: {
-    type: Number,
-    trim: true,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: 'Article',
   },
   name: {
     type: String,

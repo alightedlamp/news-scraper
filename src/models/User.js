@@ -17,10 +17,18 @@ const user = new Schema({
     trim: true,
     match: [/.+@.+\..+/, 'Please enter a valid e-mail address'],
   },
-  saved_articles: {
-    type: Schema.Types.ObjectId,
-    ref: 'Article',
-  },
+  saved_articles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Article',
+    },
+  ],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now(),

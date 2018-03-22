@@ -2,7 +2,7 @@
 import Promise from 'promise-polyfill'
 
 import Article from '../models/Article'
-import SavedArticle from '../models/SavedArticle'
+import User from '../models/User'
 import scraper from '../util/scraper'
 
 // Article handlers
@@ -19,13 +19,16 @@ export const populate = () =>
 
 export const getAll = () => Article.find({})
 export const getOne = (id: string) => Article.findOne({ _id: id })
-export const getSaved = (userId: string) => SavedArticle.find({ userId })
+// Find saved articles where User ID
+export const getSaved = (userId: string) => User.find({ userId })
 
 // API route controllers
 // ////////////////////////////
 
 export const getAllArticles = (req, res) => getAll().then(data => res.json(data))
 export const getArticleById = (req, res) => getOne(req.params.id).then(data => res.json(data))
+export const getUserArticles = (req, res) =>
+  User.find({ _id: req.user._id }, 'saved_artices').then(docs => res.json(docs))
 
 // HTML route controllers
 // ////////////////////////////

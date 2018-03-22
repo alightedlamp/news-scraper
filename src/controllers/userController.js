@@ -1,22 +1,33 @@
 import passport from 'passport'
+import mongoose from 'mongoose'
 import User from '../models/User'
-import SavedArticle from '../models/SavedArticle'
 import Article from '../models/Article'
 
 // User handlers
 // ////////////////////////////
 
+export const convert = arr => arr.map(mongoose.Types.ObjectId)
 export const getUserData = (user) => {
+  // Get saved articles where user ID
   if (user.authenticated) {
-    return SavedArticle.find({ user_id: user.user_id })
+    return User.find({ _id: user.user_id }, 'saved_articles').exec()
   }
   // Return favorites and public info
 }
-export const saveUserArticle = body => SavedArticle.create(body)
-export const likeUserArticle = () =>
-  // Update num_likes on article
-  // Save liked status on User
-  Article.update()
+
+export const saveUserArticle = userObj =>
+  User.findOneAndUpdate(
+    { _id: userObj.user_id },
+    { $push: { saved_articles: userObj.article_id } },
+    { new: true },
+  )
+
+export const likeUserArticle = userObj =>
+  User.findOneAndUpdate(
+    { _id: userObj.user_id },
+    { $push: { liked_articles: userObj.article_id } },
+    { new: true },
+  )
 
 // API route controllers
 // ////////////////////////////
@@ -56,8 +67,12 @@ export const deleteUserById = (req, res, next) =>
 // AUTHENTICATED ROUTES
 export const renderDashboard = async (req, res) => {
   const savedArticles = await getUserData({ user_id: req.user._id, authenticated: true })
+    .then(ids => Article.find({ _id: { $in: convert(ids[0].saved_articles) } }).exec())
+    .then(docs => docs)
+    .catch(err => res.status(500))
   res.render('dashboard', { saved_articles: savedArticles, user: req.user })
 }
+
 export const renderEdit = (req, res) => res.render('edit', { user: req.user.username })
 
 // Saving and liking articles are handled with AJAX client-side
@@ -72,6 +87,7 @@ export const handleSaveArticle = async (req, res, next) => {
     res.status(500).json({ error: 'Could not save article! Please try again' })
   }
 }
+
 export const handleLikeArticle = async (req, res, next) => {
   try {
     await likeUserArticle({
@@ -89,6 +105,7 @@ export const renderProfile = async (req, res) => {
   const data = await getUserData({ user_id: req.params.id, authenticated: false })
   res.render('profile', { data, user: req.user.username })
 }
+
 export const renderLogin = (req, res) => {
   if (req.user) {
     renderProfile()
@@ -96,4 +113,5 @@ export const renderLogin = (req, res) => {
     res.render('login')
   }
 }
+
 export const renderRegister = (req, res) => res.render('register')

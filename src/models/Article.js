@@ -38,10 +38,6 @@ const article = new Schema({
   created_at: {
     type: Date,
   },
-  comment: {
-    type: Schema.Types.ObjectId,
-    ref: 'Comment',
-  },
 })
 
 article.plugin(uniqueValidator)

@@ -18,7 +18,7 @@ router.get('/login', userController.renderLogin)
 // Validation and success routng are handled client-side
 // passport.authenticate takes an additional failureRedirect object arg for
 // server-side validation
-router.post('/login', passport.authenticate('local'), userController.renderDashboard)
+router.post('/login', passport.authenticate('local'), (req, res) => res.redirect('/'))
 router.get('/logout', ensureAuthenticated, userController.logoutUser)
 
 // Page render routes
